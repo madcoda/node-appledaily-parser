@@ -1,4 +1,4 @@
-import AppleDaily from './AppleDaily'
+import AppleDaily from './appledaily'
 
 
 const defaultConfig = {
