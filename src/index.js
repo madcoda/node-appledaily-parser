@@ -2,7 +2,7 @@ import AppleDaily from './appledaily'
 
 
 const defaultConfig = {
-	START_URL: "http://hkm.appledaily.com/index.php",
+	site: "mobile"
 };
 
 module.exports = function(param){

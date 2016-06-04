@@ -7,19 +7,30 @@ import path from 'path'
 import URL from 'url'
 import moment from 'moment'
 
+const knowledge = {
+	mobile: {
+		indexUrl: "http://hkm.appledaily.com/"
+	},
+	// TODO Desktop not supported yet
+	// desktop: {
+	// 	indexUrl: "http://hk.apple.nextmedia.com/",
+	// }
+}
+
 export default class AppleDaily{
 
-	constructor(config){
-		this.config = config;
+	constructor(params){
+		this.config = knowledge[params.site];
 	}
 
-	listCategories(){
-		let START_URL = this.config.START_URL;
+	categories(){
+		let $this = this;
+		let url = this.config.indexUrl;
 
-		return request(START_URL)
+		return request(url)
 		.then(function(content){
 			var $ = cheerio.load(content);
-			var urlParts = URL.parse(START_URL);
+			var urlParts = URL.parse(url);
 
 			var menuTags = $("ul.menu li:not([class])");
 			var menu = _.map(menuTags, function(item){
@@ -29,7 +40,8 @@ export default class AppleDaily{
 
 				return {
 					label: label,
-					url: fullUrl
+					url: fullUrl,
+					articles: $this.articles.bind($this, fullUrl)
 				}
 			});
 
@@ -38,7 +50,9 @@ export default class AppleDaily{
 		});
 	}
 
-	listArticles(url){
+	articles(url){
+		let $this = this;
+
 		return request(url)
 		.then(function(content){
 			var $ = cheerio.load(content);
@@ -57,7 +71,8 @@ export default class AppleDaily{
 					title: title,
 					url: fullUrl,
 					image: image,
-					relativeTime: relativeTime
+					relativeTime: relativeTime,
+					getArticle: $this.getArticle.bind($this, fullUrl)
 				}
 			});
 
@@ -66,7 +81,7 @@ export default class AppleDaily{
 		});
 	}
 
-	parseArticleAsync(url){
+	getArticle(url){
 		var urlParts = URL.parse(url);
 		if(urlParts.hostname.startsWith('hkm')){
 			return _parseMobileVersion(url);
@@ -76,7 +91,7 @@ export default class AppleDaily{
 	}
 
 	getArticlePermalink(url){
-		_getArticlePermalink(url);
+		return _getArticlePermalink(url);
 	}
 
 
