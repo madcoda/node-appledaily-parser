@@ -6,28 +6,19 @@ var URL = require('url');
 
 var AppleDaily = require('./lib')();
 
-// var url = "http://hk.apple.nextmedia.com/entertainment/art/20160602/19637188?_ga=1.266591689.693364185.1446959455";
-// var url = "http://hkm.appledaily.com/detail.php?guid=55178837&category_guid=6996647&category=instant&issue=20160603";
+AppleDaily.sections()
+.then(function(sections){
 
-// var urlParts = URL.parse(url, true);
-// console.log(URL);
-// console.log(urlParts);
-// return;
-// console.log(urlParts.protocol + '//' + urlParts.hostname + urlParts.pathname);
-// console.log(AppleDaily.getArticlePermalink(url));
+	sections.forEach(function(section){
 
-// AppleDaily.parseArticleAsync(url)
-// .then(function(article){
-// 	console.log(article);
-// });
+		console.log(section);
 
+		section.articles().then(function(arts){
 
-AppleDaily.listCategories()
-.then(function(menu){
-	console.log(menu);
+			console.log(arts);
+
+		});
+		
+	})
+
 });
-
-// AppleDaily.listArticles("http://hkm.appledaily.com/list.php?category_guid=462&category=daily")
-// .then(function(result){
-// 	console.log(result);
-// });
