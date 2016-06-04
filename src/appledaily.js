@@ -23,7 +23,7 @@ export default class AppleDaily{
 		this.config = knowledge[params.site];
 	}
 
-	categories(){
+	sections(){
 		let $this = this;
 		let url = this.config.indexUrl;
 
